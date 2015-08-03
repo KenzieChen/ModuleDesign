@@ -73,29 +73,40 @@ static uiCmdAccessState AccessDefault(uiCmdAccessMode access_mode)
 	return(ACCESS_AVAILABLE);
 
 }
-void Test1()
-{  
-	AfxMessageBox(_T("轴"));
-}  
-void Test2()
-{  
-	AfxMessageBox(_T("齿轮")); 
-}  
+void showCheckTaskForm();
+
+void showRegForm();
+
 extern "C" int user_initialize()
-{  
+{
 	ProError status;  
 	ProFileName  MsgFile;
-	ProStringToWstring(MsgFile,"IconMessage.txt");  //注意此处的IconMessage与后面的text文件夹下的IconMessage.txt文件名必须相同
-	uiCmdCmdId PushButton1_cmd_id,PushButton2_cmd_id; 
-	status=ProMenubarMenuAdd("MainMenu","Function","Help",PRO_B_TRUE,MsgFile);  
-	ProCmdActionAdd("PushButton1_Act",(uiCmdCmdActFn)Test1,12,AccessDefault,PRO_B_TRUE,PRO_B_TRUE,&PushButton1_cmd_id);
-	ProMenubarmenuPushbuttonAdd("MainMenu","PushButton","FirstButton","this button will show a message",NULL,PRO_B_TRUE,PushButton1_cmd_id,MsgFile);
-	ProCmdActionAdd("PushButton2_Act",(uiCmdCmdActFn)Test2,uiCmdPrioDefault,AccessDefault,PRO_B_TRUE,PRO_B_TRUE,&PushButton2_cmd_id);
-	ProMenubarmenuPushbuttonAdd("MainMenu","PushButton2","SecondButton","this button will show a message",NULL,PRO_B_TRUE,PushButton2_cmd_id,MsgFile);
+	ProStringToWstring(MsgFile,"Message.txt");
+
+	uiCmdCmdId TaskButton_cmd_id,RegButton_cmd_id; 
+
+	status=ProMenubarMenuAdd("MainMenu","VariantDesign","Help",PRO_B_TRUE,MsgFile);  
+
+	ProCmdActionAdd("TaskButton_Act",(uiCmdCmdActFn)showCheckTaskForm,uiCmdPrioDefault,AccessDefault,PRO_B_TRUE,PRO_B_TRUE,&TaskButton_cmd_id);
+	ProMenubarmenuPushbuttonAdd("MainMenu","TaskButton","CheckTask","check the task",NULL,PRO_B_TRUE,TaskButton_cmd_id,MsgFile);
+
+	ProCmdActionAdd("PushButton2_Act",(uiCmdCmdActFn)showRegForm,uiCmdPrioDefault,AccessDefault,PRO_B_TRUE,PRO_B_TRUE,&RegButton_cmd_id);
+	ProMenubarmenuPushbuttonAdd("MainMenu","RegButton","RegModel","parametic design",NULL,PRO_B_TRUE,RegButton_cmd_id,MsgFile);
 	return status; 
 } 
 
 extern  "C" void user_terminate()
 {  
 	AFX_MANAGE_STATE(AfxGetStaticModuleState()); 
+}
+
+
+void showCheckTaskForm()
+{  
+	AfxMessageBox(_T("接收任务"));
+}  
+
+void showRegForm()
+{
+	AfxMessageBox(_T("模型再生"));
 }

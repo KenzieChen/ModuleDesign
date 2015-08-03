@@ -1,0 +1,24 @@
+﻿VariantDesign
+模块化变型设计
+#
+#
+
+CheckTask
+查看任务
+#
+#
+
+check the task
+查看接收到的模块化变型任务
+#
+#
+
+RegModel
+模型再生
+#
+#
+
+parametic design
+进行参数化变型
+#
+#
