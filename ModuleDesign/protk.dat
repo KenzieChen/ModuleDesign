@@ -1,0 +1,9 @@
+NAME ModuleDesign
+EXEC_FILE D:\github\ModuleDesign\x64\Debug\ModuleDesign.dll
+TEXT_DIR  D:\github\ModuleDesign\ModuleDesign\text
+STARTUP DLL
+FAIL_TOL TRUE
+DELAY_START FALSE
+ALLOW_STOP TRUE
+REVISION 2014
+END
