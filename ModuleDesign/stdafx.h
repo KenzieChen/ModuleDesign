@@ -36,4 +36,15 @@
 #include <afxcmn.h>                     // MFC 对 Windows 公共控件的支持
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
+#include <ProToolkit.h>
+#include <ProWindows.h>
+#include <ProMdl.h>
+#include <ProModelitem.h>
+#include <ProParameter.h>
+#include <ProUtil.h>
 
+extern ProError UsrActivateCurrentWindow();
+extern void UsrGerParaOfSolid();
+extern ProMdl GetCurrentMdl();
+extern void UsrGetParaOfSolid(ProSolid solid,CArray<ProParameter,ProParameter> &parmlist);
+#import "C:\Program Files\Common Files\System\ado\msado15.dll" no_namespace rename("EOF","adoEOF")
