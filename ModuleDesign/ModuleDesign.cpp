@@ -102,6 +102,9 @@ extern "C" int user_initialize()
 extern  "C" void user_terminate()
 {  
 	AFX_MANAGE_STATE(AfxGetStaticModuleState()); 
+	if(taskdlg != NULL){
+		delete taskdlg;
+	}
 }
 
 

@@ -113,7 +113,17 @@ void CTaskDlg::OnBnClickedSeerequire()
 	if(status == 0){
 		AfxMessageBox(_T("对话框创建失败"));
 	}
-	ADO ado;
-	ado.OnInitADOConn();
+	//ADO ado;
+	//ado.OnInitADOConn();
+	//ado.CloseConn();
 
+}
+
+
+BOOL CTaskDlg::DestroyWindow()
+{
+	// TODO: 在此添加专用代码和/或调用基类
+	//if(){}
+
+	return CDialog::DestroyWindow();
 }

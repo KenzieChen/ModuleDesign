@@ -25,4 +25,6 @@ public:
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnBnClickedSelect();
 	afx_msg void OnBnClickedSeerequire();
+	virtual BOOL DestroyWindow();
+	
 };
