@@ -18,8 +18,10 @@ void ADO::OnInitADOConn(void)
      {  
         m_pConnection.CreateInstance("ADODB.Connection");  
        // _bstr_t strConnect = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source = Media.mdb";      //data source后添数据库文件相对路径或绝对路径均可。  
-        _bstr_t strConnect = "Provider=MSDAORA.1;Data Source=ORCL;User ID=CQZ;Password=CQZ";   
-		m_pConnection->Open(strConnect,"","",adModeUnknown);  
+        //_bstr_t strConnect = "Provider=MSDAORA.1;Data Source=ORCL;User ID=CQZ;Password=CQZ";   
+		//m_pConnection->Open(strConnect,"","",adModeUnknown);  
+		_bstr_t strConnect="Provider=MSDASQL.1;Persist Security Info=False;User ID=cqz;Password=cqz;Data Source=oracle;";
+		m_pConnection->Open(strConnect,"","",adModeUnknown);   
 		AfxMessageBox(_T("连接成功"));
      }  
    

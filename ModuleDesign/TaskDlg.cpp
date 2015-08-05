@@ -113,5 +113,7 @@ void CTaskDlg::OnBnClickedSeerequire()
 	if(status == 0){
 		AfxMessageBox(_T("对话框创建失败"));
 	}
+	ADO ado;
+	ado.OnInitADOConn();
 
 }

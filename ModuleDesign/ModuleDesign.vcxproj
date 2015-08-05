@@ -71,8 +71,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Program Files\PTC\Creo 2.0\Common Files\M010\prodevelop\includes;C:\Program Files\PTC\Creo 2.0\Common Files\M010\protoolkit\protk_appls\includes;C:\Program Files\PTC\Creo 2.0\Common Files\M010\protoolkit\includes;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files\PTC\Creo 2.0\Common Files\M010\protoolkit\x86e_win64\obj;C:\Program Files\PTC\Creo 2.0\Common Files\M010\prodevelop\x86e_win64\obj;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Program Files\PTC\Creo 2.0\Common Files\M010\prodevelop\includes;D:\Program Files\PTC\Creo 2.0\Common Files\M010\protoolkit\protk_appls\includes;D:\Program Files\PTC\Creo 2.0\Common Files\M010\protoolkit\includes;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Program Files\PTC\Creo 2.0\Common Files\M010\protoolkit\x86e_win64\obj;D:\Program Files\PTC\Creo 2.0\Common Files\M010\prodevelop\x86e_win64\obj;$(LibraryPath)</LibraryPath>
     <EmbedManifest>false</EmbedManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
