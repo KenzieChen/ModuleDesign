@@ -42,6 +42,7 @@
 #include <ProModelitem.h>
 #include <ProParameter.h>
 #include <ProUtil.h>
+#include <ProParamDriver.h>
 
 extern ProError UsrActivateCurrentWindow();
 extern void UsrGerParaOfSolid();
