@@ -41,6 +41,7 @@ BOOL CRegModelDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
+	 CenterWindow();
 
 	cur_solid = (ProSolid)GetCurrentMdl();
 	if(cur_solid == NULL){

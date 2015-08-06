@@ -1,4 +1,5 @@
 #pragma once
+#include "ado.h"
 
 
 // CTaskDlg ¶Ô»°¿ò
@@ -28,4 +29,8 @@ public:
 	virtual BOOL DestroyWindow();
 	
 	virtual void PostNcDestroy();
+	void showTaskList(void);
+	int currSelected;
+	afx_msg void OnNMClickTasklist(NMHDR *pNMHDR, LRESULT *pResult);
+	ADO m_ado;
 };

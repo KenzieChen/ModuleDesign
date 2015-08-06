@@ -102,22 +102,12 @@ extern "C" int user_initialize()
 extern  "C" void user_terminate()
 {  
 	AFX_MANAGE_STATE(AfxGetStaticModuleState()); 
-	//if(taskdlg != NULL){
-	//	delete taskdlg;
-	//}
 }
 
 
 void showCheckTaskForm()
 {  
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-/*	int status;
-	CTaskDlg dlg;
-	status = dlg.DoModal();
-	if(status ==0){
-		AfxMessageBox("对话框创建失败");
-	}
-*/
 
 	if(taskdlg == NULL){
 		taskdlg = new  CTaskDlg();
@@ -136,17 +126,6 @@ void showCheckTaskForm()
 void showRegForm()
 {
 	AfxMessageBox(_T("模型再生"));
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-		if(taskdlg == NULL){
-		taskdlg = new  CTaskDlg();
-		taskdlg->Create(TaskDialog);
-		taskdlg->ShowWindow(SW_SHOW);
-	}else{
-		delete taskdlg;
-		taskdlg = new  CTaskDlg();
-		taskdlg->Create(TaskDialog);
-		taskdlg->ShowWindow(SW_SHOW);
-	}
 
 	UsrActivateCurrentWindow();
 }
