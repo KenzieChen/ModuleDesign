@@ -27,4 +27,5 @@ public:
 	afx_msg void OnBnClickedSeerequire();
 	virtual BOOL DestroyWindow();
 	
+	virtual void PostNcDestroy();
 };

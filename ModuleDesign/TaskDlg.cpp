@@ -82,11 +82,9 @@ void CTaskDlg::OnLvnItemchangedTasklist(NMHDR *pNMHDR, LRESULT *pResult)
 void CTaskDlg::OnBnClickedCancel()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	CDialog::OnCancel();
+	//CDialog::OnCancel();
+	DestroyWindow();
 }
-
-
-
 
 
 
@@ -113,17 +111,21 @@ void CTaskDlg::OnBnClickedSeerequire()
 	if(status == 0){
 		AfxMessageBox(_T("对话框创建失败"));
 	}
-	//ADO ado;
-	//ado.OnInitADOConn();
-	//ado.CloseConn();
-
 }
 
 
 BOOL CTaskDlg::DestroyWindow()
 {
 	// TODO: 在此添加专用代码和/或调用基类
-	//if(){}
 
 	return CDialog::DestroyWindow();
+}
+
+
+void CTaskDlg::PostNcDestroy()
+{
+	// TODO: 在此添加专用代码和/或调用基类
+
+	CDialog::PostNcDestroy();
+	delete this;
 }
