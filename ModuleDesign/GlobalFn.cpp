@@ -28,7 +28,11 @@ ProError UsrParameterActionFn(ProParameter *Param,ProError status,CArray<ProPara
 
 ProError UsrParameterFilterFn(ProParameter *param,ProError status,CArray<ProParameter,ProParameter> *p_pdata)
 {
+	ProType strtmp =param->type;
+	//ProWstringToString(strtmp,param->type);
 	return(PRO_TK_NO_ERROR);
+	
+	//return(PRO_TK_CONTINUE);
 }
 
 void UsrGetParaOfSolid(ProSolid solid,CArray<ProParameter,ProParameter> &parmlist)

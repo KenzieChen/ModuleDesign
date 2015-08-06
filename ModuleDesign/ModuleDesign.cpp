@@ -108,13 +108,17 @@ extern  "C" void user_terminate()
 void showCheckTaskForm()
 {  
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-
+	
+	
 	if(taskdlg == NULL){
 		taskdlg = new  CTaskDlg();
 		taskdlg->Create(TaskDialog);
 		taskdlg->ShowWindow(SW_SHOW);
-	}else{
-		delete taskdlg;
+	}
+	else{
+		//解决野指针问题（窗口关闭之后taskdlg变为野指针（指针指向的内存被释放，没有置NULL)，再打开窗口的时候，taskdlg!=NULL）
+		taskdlg=NULL;
+		//delete taskdlg;
 		taskdlg = new  CTaskDlg();
 		taskdlg->Create(TaskDialog);
 		taskdlg->ShowWindow(SW_SHOW);
