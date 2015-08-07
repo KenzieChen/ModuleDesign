@@ -20,6 +20,8 @@ ProMdl GetCurrentMdl(){
 	return NULL;
 }
 
+
+
 ProError UsrParameterActionFn(ProParameter *Param,ProError status,CArray<ProParameter,ProParameter> * p_pdata)
 {
 	p_pdata->Add(*Param);
@@ -38,7 +40,7 @@ ProError UsrParameterFilterFn(ProParameter *param,ProError status,CArray<ProPara
 	
 }
 
-void UsrGetParaOfSolid(ProSolid solid,CArray<ProParameter,ProParameter> &parmlist)
+void UsrGetParaOfSolid(ProMdl solid,CArray<ProParameter,ProParameter> &parmlist)
 {
 	ProModelitem modelitem;
 	ProError status;

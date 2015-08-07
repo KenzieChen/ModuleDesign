@@ -45,6 +45,9 @@
     <ClCompile Include="RequirementDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="SaveModelDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ModuleDesign.h">
@@ -69,6 +72,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="RequirementDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveModelDlg.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

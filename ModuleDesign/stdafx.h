@@ -43,11 +43,12 @@
 #include <ProParameter.h>
 #include <ProUtil.h>
 #include <ProParamDriver.h>
+#include <ProSolid.h>
 
 
 
 extern ProError UsrActivateCurrentWindow();
 extern void UsrGerParaOfSolid();
 extern ProMdl GetCurrentMdl();
-extern void UsrGetParaOfSolid(ProSolid solid,CArray<ProParameter,ProParameter> &parmlist);
+extern void UsrGetParaOfSolid(ProMdl solid,CArray<ProParameter,ProParameter> &parmlist);
 #import "C:\Program Files\Common Files\System\ado\msado15.dll" no_namespace rename("EOF","adoEOF")

@@ -49,7 +49,7 @@ BOOL CTaskDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 	
 	// TODO:  在此添加额外的初始化
-	 CenterWindow();
+	CenterWindow();
 	m_TaskList.SetExtendedStyle(LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES);
 	m_TaskList.InsertColumn(0,"序号",LVCFMT_CENTER,40,-1);
 	m_TaskList.InsertColumn(1,"任务名称",LVCFMT_CENTER,160,-1);
@@ -62,6 +62,10 @@ BOOL CTaskDlg::OnInitDialog()
 	//partId
 	m_TaskList.InsertColumn(7,"",LVCFMT_CENTER,0,-1);
 	showTaskList();
+
+	//保存模型按钮不可用
+
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
 }
@@ -107,7 +111,7 @@ void CTaskDlg::OnBnClickedSelect()
 		strtmp = requirementStr.Left(pos);
 		left = strtmp.Left(strtmp.Find("="));
 		//为什么是-1??
-		right = strtmp.Right(strtmp.Find("=")-1);
+		right = strtmp.Mid(strtmp.Find("=")+1);
 
 		param_Map.SetAt(left,right);
 
@@ -126,6 +130,7 @@ void CTaskDlg::OnBnClickedSelect()
 	if(status == 0){
 		AfxMessageBox(_T("对话框创建失败"));
 	}
+	
 }
 
 //查看变型要求
