@@ -6,13 +6,13 @@
 #include "RegModelDlg.h"
 #include "afxdialogex.h"
 
-
 // CRegModelDlg 对话框
 
 IMPLEMENT_DYNAMIC(CRegModelDlg, CDialog)
 
 CRegModelDlg::CRegModelDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CRegModelDlg::IDD, pParent)
+	, partId(0)
 {
 
 }
@@ -42,6 +42,24 @@ BOOL CRegModelDlg::OnInitDialog()
 
 	// TODO:  在此添加额外的初始化
 	 CenterWindow();
+
+	 //CString sql = _T("select * from PART part where part.id=690 union select * from CLASSIFICATION_TREE module where module.id = part.codeclass_id");
+	 CString sql = _T("select * from PART part, CLASSIFICATION_TREE module where part.id=690 and module.id = part.class_id");
+	 //sql+=_T("and module.ID = part.CLASS_ID");
+	 m_ado.OnInitADOConn();
+	 _RecordsetPtr record = m_ado.OpenRecordset(sql);
+	 CString partName = (LPCSTR)_bstr_t(record->GetCollect("PART_NAME"));
+	  CString CODE = (LPCSTR)_bstr_t(record->GetCollect("CODE"));
+
+	m_ado.CloseRecordset();
+	m_ado.CloseConn();
+
+
+
+
+
+
+
 
 	cur_solid = (ProSolid)GetCurrentMdl();
 	if(cur_solid == NULL){
@@ -77,6 +95,7 @@ void CRegModelDlg::ShowParamList(void)
 	ProParamvalue proval;
 	CString csType;
 	CString csValue;
+	CString targParam;
 
 	paramList.RemoveAll();
 	m_ParamList.DeleteAllItems();
@@ -84,11 +103,16 @@ void CRegModelDlg::ShowParamList(void)
 	for(int i=0;i<paramList.GetCount();i++){
 		sprintf(strtmp,"%d",i+1);
 		indexNo = m_ParamList.InsertItem(LVIF_TEXT|LVIF_PARAM,i,strtmp,0,0,0,i);
+		//strtmp 参数名
 		ProWstringToString(strtmp,paramList[i].id);
+
+
+
+		//获取参数变量值
 		ProParameterValueGet(&paramList[i],&proval);
 		switch(proval.type){
 			case PRO_PARAM_DOUBLE:
-				csValue.Format("%0f",proval.value.d_val);
+				csValue.Format("%.2f",proval.value.d_val);
 				break;
 			case PRO_PARAM_STRING:
 				csValue = CString(proval.value.s_val);
@@ -106,7 +130,13 @@ void CRegModelDlg::ShowParamList(void)
 		}
 		m_ParamList.SetItemText(indexNo,1,_T(strtmp));
 		m_ParamList.SetItemText(indexNo,2,csValue);
-		m_ParamList.SetItemText(indexNo,3,"123");
+
+		if(param_Map->Lookup(strtmp,targParam)){
+			m_ParamList.SetItemText(indexNo,3,targParam);
+		}else{
+			m_ParamList.SetItemText(indexNo,3,_T(""));
+		}
+		
 	}
 
 }

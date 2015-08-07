@@ -1,6 +1,7 @@
 #pragma once
 #include "afxcmn.h"
-
+#include "ADO.h"
+#include "afxtempl.h"
 
 // CRegModelDlg ¶Ô»°¿ò
 
@@ -27,4 +28,8 @@ public:
 	ProSolid cur_solid;
 	CArray<ProParameter,ProParameter> paramList;
 	void ShowParamList(void);
+	long partId;
+	ADO m_ado;
+//	CMap<CString,LPCTSTR,CString,LPCTSTR> param_Map;
+	CMap<CString,LPCTSTR,CString,LPCTSTR> *param_Map;
 };
