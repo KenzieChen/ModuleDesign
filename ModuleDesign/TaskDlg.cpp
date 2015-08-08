@@ -122,7 +122,7 @@ void CTaskDlg::OnBnClickedSelect()
 	int status;
 	CRegModelDlg regdlg;
 
-	regdlg.partId = atol(m_TaskList.GetItemText(currSelected,7));
+	regdlg.partId = m_TaskList.GetItemText(currSelected,7);
 	
 	regdlg.param_Map = &param_Map;
 

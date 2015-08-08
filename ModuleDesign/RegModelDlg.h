@@ -29,13 +29,14 @@ public:
 	ProMdl cur_solid;
 	CArray<ProParameter,ProParameter> paramList;
 	void ShowParamList(void);
-	long partId;
+
 	ADO m_ado;
-//	CMap<CString,LPCTSTR,CString,LPCTSTR> param_Map;
+
 	CMap<CString,LPCTSTR,CString,LPCTSTR> *param_Map;
 	CEdit CPartName;
 	CEdit CPARTNUMBER;
 	afx_msg void OnBnClickedReg();
 	afx_msg void OnBnClickedSave();
 	CButton CSaveBtn;
+	CString partId;
 };

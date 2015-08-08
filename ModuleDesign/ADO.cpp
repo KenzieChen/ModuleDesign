@@ -49,6 +49,21 @@ void ADO::CloseRecordset(void)
         m_pRecordset->Close();  
 }  
 
+_RecordsetPtr& ADO::CmdExecute(CString sql){
+	ASSERT(!sql.IsEmpty());
+	try{
+		m_pCommand.CreateInstance(__uuidof(Command));
+		m_pCommand->ActiveConnection = m_pConnection;
+		m_pCommand->CommandText = _bstr_t(sql);
+		m_pRecordset = m_pCommand->Execute(NULL, NULL,adCmdText);
+	}
+	catch(_com_error t)  
+    {  
+        AfxMessageBox(t.Description());  
+    }  
+	return m_pRecordset;  
+}
+
 void ADO::CloseConn(void)  
 {  
      m_pConnection->Close();  

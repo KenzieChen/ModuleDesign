@@ -13,9 +13,9 @@ IMPLEMENT_DYNAMIC(CRegModelDlg, CDialog)
 
 CRegModelDlg::CRegModelDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CRegModelDlg::IDD, pParent)
-	, partId(0)
 {
 
+	partId = _T("");
 }
 
 CRegModelDlg::~CRegModelDlg()
@@ -50,11 +50,9 @@ BOOL CRegModelDlg::OnInitDialog()
 	 CenterWindow();
 
 	 CString draftUrl = "D:\\gnhzbdata";
-	 CString partIdStr;
-	 partIdStr.Format(_T("%ld"),partId);
 	// CString sql = _T("select * from PART part, CLASSIFICATION_TREE module,TREE_DRAFT draft where part.id=690 and module.id = part.class_id and draft.tree_id=module.id and draft.ismaster =1");
 	 CString sql = _T("select * from PART part, CLASSIFICATION_TREE module,TREE_DRAFT draft where part.id=");
-	 sql+=partIdStr;
+	 sql+=partId;
 	 sql+=_T(" and module.id = part.class_id and draft.tree_id=module.id and draft.ismaster =1");
 	 m_ado.OnInitADOConn();
 	 _RecordsetPtr record = m_ado.OpenRecordset(sql);
@@ -204,12 +202,12 @@ void CRegModelDlg::OnBnClickedReg()
 
 }
 
-
 void CRegModelDlg::OnBnClickedSave()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	int status;
 	CSaveModelDlg smDlg;
+	smDlg.partId = partId;
 	status = smDlg.DoModal();
 		if(status == 0){
 		AfxMessageBox(_T("对话框创建失败"));

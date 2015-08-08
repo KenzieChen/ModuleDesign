@@ -1,4 +1,5 @@
 #pragma once
+#include "afxwin.h"
 
 
 // CSaveModelDlg 对话框
@@ -18,4 +19,12 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
 	DECLARE_MESSAGE_MAP()
+public:
+	CString partId;
+	virtual BOOL OnInitDialog();
+	CString draft_type_id;
+	afx_msg void OnBnClickedSave();
+
+	CString m_DraftName;
+	CString m_DraftDesc;
 };
