@@ -27,4 +27,9 @@ public:
 
 	CString m_DraftName;
 	CString m_DraftDesc;
+	ProMdl cur_solid;
+	afx_msg void OnBnClickedCancel();
+	CString filename;
+	CString filePath;
+	CString taskId;
 };

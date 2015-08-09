@@ -28,6 +28,7 @@ void CTaskDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, TaskList, m_TaskList);
+	DDX_Control(pDX, IDSUBMITTASK, CSubmitTask);
 }
 
 
@@ -38,6 +39,7 @@ BEGIN_MESSAGE_MAP(CTaskDlg, CDialog)
 	ON_BN_CLICKED(IDSELECT, &CTaskDlg::OnBnClickedSelect)
 	ON_BN_CLICKED(IDSEEREQUIRE, &CTaskDlg::OnBnClickedSeerequire)
 	ON_NOTIFY(NM_CLICK, TaskList, &CTaskDlg::OnNMClickTasklist)
+	ON_BN_CLICKED(IDSUBMITTASK, &CTaskDlg::OnBnClickedSubmittask)
 END_MESSAGE_MAP()
 
 
@@ -61,6 +63,12 @@ BOOL CTaskDlg::OnInitDialog()
 	m_TaskList.InsertColumn(6,"",LVCFMT_CENTER,0,-1);
 	//partId
 	m_TaskList.InsertColumn(7,"",LVCFMT_CENTER,0,-1);
+	//模型名称
+	m_TaskList.InsertColumn(8,"",LVCFMT_CENTER,0,-1);
+	//模型路径
+	m_TaskList.InsertColumn(9,"",LVCFMT_CENTER,0,-1);
+	//任务id
+	m_TaskList.InsertColumn(10,"",LVCFMT_CENTER,0,-1);
 	showTaskList();
 
 	//保存模型按钮不可用
@@ -110,7 +118,6 @@ void CTaskDlg::OnBnClickedSelect()
 	while(-1 != pos){
 		strtmp = requirementStr.Left(pos);
 		left = strtmp.Left(strtmp.Find("="));
-		//为什么是-1??
 		right = strtmp.Mid(strtmp.Find("=")+1);
 
 		param_Map.SetAt(left,right);
@@ -123,14 +130,16 @@ void CTaskDlg::OnBnClickedSelect()
 	CRegModelDlg regdlg;
 
 	regdlg.partId = m_TaskList.GetItemText(currSelected,7);
-	
+	regdlg.filename = m_TaskList.GetItemText(currSelected,8);
+	regdlg.filePath = m_TaskList.GetItemText(currSelected,9);
+	regdlg.taskId = m_TaskList.GetItemText(currSelected,10);
 	regdlg.param_Map = &param_Map;
 
 	status = regdlg.DoModal();
 	if(status == 0){
 		AfxMessageBox(_T("对话框创建失败"));
 	}
-	
+	showTaskList();
 }
 
 //查看变型要求
@@ -146,7 +155,9 @@ void CTaskDlg::OnBnClickedSeerequire()
 	}
 	int status;
 	CRequirementDlg reqdlg;
-	reqdlg.taskRequirement = m_TaskList.GetItemText(currSelected,6);
+	CString temp = m_TaskList.GetItemText(currSelected,6);
+	temp.Replace(";","\r\n");
+	reqdlg.taskRequirement = temp;
 	status = reqdlg.DoModal();
 	if(status == 0){
 		AfxMessageBox(_T("对话框创建失败"));
@@ -173,6 +184,7 @@ void CTaskDlg::PostNcDestroy()
 
 void CTaskDlg::showTaskList(void)
 {
+	m_TaskList.DeleteAllItems();
 	char strtmp[32];
 	int indexNo=0;
 	CString taskName;
@@ -182,13 +194,17 @@ void CTaskDlg::showTaskList(void)
 	CString requirement;
 	CString partId; 
 	CString status;
-
-	CString sql = "select * from variant_task where status = '未完成'";
+	CString filename;
+	CString filePath;
+	CString taskId;
+	CString sql = "select * from variant_task where status = '未完成' or status = '待提交'";
 	
 	m_ado.OnInitADOConn();
 	_RecordsetPtr record = m_ado.OpenRecordset(sql);
 	int i=0;
 	while(!record->adoEOF){
+
+		taskId.Format(_T("%d"),record->GetCollect("ID").lVal);
 		//任务名字
 		taskName = (LPCSTR)_bstr_t(record->GetCollect("TASK_NAME"));
 
@@ -210,6 +226,9 @@ void CTaskDlg::showTaskList(void)
 		status =(LPCSTR)_bstr_t(record->GetCollect("STATUS"));
 		partId.Format(_T("%d"),record->GetCollect("PART").lVal);
 
+		filename = (LPCSTR)_bstr_t(record->GetCollect("FILENAME"));
+		filePath = (LPCSTR)_bstr_t(record->GetCollect("FILE_PATH"));
+
 		sprintf(strtmp,"%d",i+1);
 		indexNo = m_TaskList.InsertItem(LVIF_TEXT|LVIF_PARAM,i,strtmp,0,0,0,i);
 		m_TaskList.SetItemText(indexNo,1,taskName);
@@ -219,6 +238,9 @@ void CTaskDlg::showTaskList(void)
 		m_TaskList.SetItemText(indexNo,5,demo);
 		m_TaskList.SetItemText(indexNo,6,requirement);
 		m_TaskList.SetItemText(indexNo,7,partId);
+		m_TaskList.SetItemText(indexNo,8,filename);
+		m_TaskList.SetItemText(indexNo,9,filePath);
+		m_TaskList.SetItemText(indexNo,10,taskId);
 		i++;
 		record->MoveNext();
 	}
@@ -234,6 +256,31 @@ void CTaskDlg::OnNMClickTasklist(NMHDR *pNMHDR, LRESULT *pResult)
 	// TODO: 在此添加控件通知处理程序代码
 	POSITION pos = m_TaskList.GetFirstSelectedItemPosition();
 	currSelected = m_TaskList.GetNextSelectedItem(pos);
-
+	CString taskstatus = m_TaskList.GetItemText(currSelected,4);
+	if(taskstatus.Compare("待提交")==0){
+		CSubmitTask.EnableWindow(TRUE);
+	}else{
+		CSubmitTask.EnableWindow(FALSE);
+	}
 	*pResult = 0;
+}
+
+
+
+
+
+void CTaskDlg::OnBnClickedSubmittask()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CString taskId = m_TaskList.GetItemText(currSelected,10);
+	CString updateTask = _T("update VARIANT_TASK set STATUS = '已完成' where ID=");
+	updateTask += taskId;
+	ADO m_ado;
+	m_ado.OnInitADOConn();
+	m_ado.CmdExecute(updateTask);
+	m_ado.CloseRecordset();
+	m_ado.CloseConn();
+	CSubmitTask.EnableWindow(FALSE);
+	showTaskList();
+	MessageBox("任务提交完成");
 }

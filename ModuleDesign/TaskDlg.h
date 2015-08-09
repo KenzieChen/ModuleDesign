@@ -1,5 +1,6 @@
 #pragma once
 #include "ado.h"
+#include "afxwin.h"
 
 
 // CTaskDlg ¶Ô»°¿ò
@@ -33,4 +34,6 @@ public:
 	int currSelected;
 	afx_msg void OnNMClickTasklist(NMHDR *pNMHDR, LRESULT *pResult);
 	ADO m_ado;
+	CButton CSubmitTask;
+	afx_msg void OnBnClickedSubmittask();
 };

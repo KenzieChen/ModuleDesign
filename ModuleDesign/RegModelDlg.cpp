@@ -13,6 +13,8 @@ IMPLEMENT_DYNAMIC(CRegModelDlg, CDialog)
 
 CRegModelDlg::CRegModelDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CRegModelDlg::IDD, pParent)
+	, filename(_T(""))
+	, taskId(_T(""))
 {
 
 	partId = _T("");
@@ -50,15 +52,19 @@ BOOL CRegModelDlg::OnInitDialog()
 	 CenterWindow();
 
 	 CString draftUrl = "D:\\gnhzbdata";
-	// CString sql = _T("select * from PART part, CLASSIFICATION_TREE module,TREE_DRAFT draft where part.id=690 and module.id = part.class_id and draft.tree_id=module.id and draft.ismaster =1");
-	 CString sql = _T("select * from PART part, CLASSIFICATION_TREE module,TREE_DRAFT draft where part.id=");
+	 draftUrl += filePath;
+	 //不再需要查询主模型的url
+	 //CString sql = _T("select * from PART part, CLASSIFICATION_TREE module,TREE_DRAFT draft where part.id=");
+	// sql+=partId;
+	// sql+=_T(" and module.id = part.class_id and draft.tree_id=module.id and draft.ismaster =1");
+
+	 CString sql = _T("select * from PART where id=");
 	 sql+=partId;
-	 sql+=_T(" and module.id = part.class_id and draft.tree_id=module.id and draft.ismaster =1");
 	 m_ado.OnInitADOConn();
 	 _RecordsetPtr record = m_ado.OpenRecordset(sql);
 	 CString partName = (LPCSTR)_bstr_t(record->GetCollect("PART_NAME"));
 	 CString partNumber = (LPCSTR)_bstr_t(record->GetCollect("PART_NUMBER"));
-	 _variant_t varUrl = record->GetCollect("DRAFT_URL");
+	/* _variant_t varUrl = record->GetCollect("DRAFT_URL");
 	 //主模型路径为空的情况
 	 if(varUrl.vt == VT_NULL || varUrl.vt == VT_EMPTY){
 		m_ado.CloseRecordset();
@@ -70,8 +76,9 @@ BOOL CRegModelDlg::OnInitDialog()
 	 }else{
 			draftUrl += (LPCSTR)_bstr_t(varUrl);
 	 }
+	 */
 
-	 ProPath modelPath;
+	ProPath modelPath;
 	char* p=(char*)draftUrl.LockBuffer();
 	 ProStringToWstring(modelPath,p);
 	 ProError status = ProMdlLoad(modelPath,PRO_MDL_PART,PRO_B_FALSE,&cur_solid);
@@ -207,7 +214,12 @@ void CRegModelDlg::OnBnClickedSave()
 	// TODO: 在此添加控件通知处理程序代码
 	int status;
 	CSaveModelDlg smDlg;
+
 	smDlg.partId = partId;
+	smDlg.cur_solid =cur_solid;
+	smDlg.filename = filename;
+	smDlg.filePath = filePath;
+	smDlg.taskId = taskId;
 	status = smDlg.DoModal();
 		if(status == 0){
 		AfxMessageBox(_T("对话框创建失败"));

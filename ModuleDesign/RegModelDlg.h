@@ -39,4 +39,7 @@ public:
 	afx_msg void OnBnClickedSave();
 	CButton CSaveBtn;
 	CString partId;
+	CString filename;
+	CString filePath;
+	CString taskId;
 };

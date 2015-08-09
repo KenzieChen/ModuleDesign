@@ -16,6 +16,9 @@ IMPLEMENT_DYNAMIC(CSaveModelDlg, CDialog)
 CSaveModelDlg::CSaveModelDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CSaveModelDlg::IDD, pParent)
 	, partId(_T(""))
+	, filename(_T(""))
+	, filePath(_T(""))
+	, taskId(_T(""))
 {
 
 	draft_type_id = _T("");
@@ -37,6 +40,7 @@ void CSaveModelDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CSaveModelDlg, CDialog)
 	ON_BN_CLICKED(IDSAVE, &CSaveModelDlg::OnBnClickedSave)
+	ON_BN_CLICKED(IDCANCEL, &CSaveModelDlg::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 
@@ -60,13 +64,18 @@ void CSaveModelDlg::OnBnClickedSave()
 	// TODO: 在此添加控件通知处理程序代码
 
 	//查看模型是否存在
-	ProMdl solid = GetCurrentMdl();
-	if(solid!=NULL)
+	//ProMdl solid = GetCurrentMdl();
+
+	//cur_solid是全局变量
+	if(cur_solid==NULL){
+		AfxMessageBox("无模型");
+		return;
+	}
 
 
 	//获取文本框的参数，判断是否为空
 	UpdateData(TRUE);
-	if(m_DraftName==_T("") ||m_DraftName.IsEmpty()){
+	if(m_DraftName ==_T("") ||m_DraftName.IsEmpty()){
 		MessageBox("请填写模型名称","提示");
 	}
 
@@ -97,16 +106,16 @@ void CSaveModelDlg::OnBnClickedSave()
 	
 	//SYSTEMTIME time =0;
 	//file_name.Format("%ld",time.wMilliseconds);
-	SYSTEMTIME *localtime;
-    localtime=new SYSTEMTIME;
-    GetLocalTime(localtime);
-	file_name.Format("%ld",localtime->wMilliseconds);
-	file_name +=_T(".prt");
+	//SYSTEMTIME *localtime;
+   // localtime = new SYSTEMTIME;
+   // GetLocalTime(localtime);
+	//file_name.Format("%ld",localtime->wMilliseconds);
+	//file_name +=_T(".prt");
 
 
 	//获得文件完整路径
-	draft_url = _T("\\uploadPartModel\\");
-	draft_url += file_name;
+	//draft_url = _T("\\uploadPartModel\\");
+	//draft_url += file_name;
 
 	//再查询零件的uuid
 	CString getPartSql = "select * from PART where id =";
@@ -122,9 +131,9 @@ void CSaveModelDlg::OnBnClickedSave()
 	insertDraft +="','";
 	insertDraft +=draft_suffix;
 	insertDraft +="','";
-	insertDraft +=draft_url;
+	insertDraft +=filePath;
 	insertDraft +="','";
-	insertDraft +=file_name;
+	insertDraft +=filename;
 	insertDraft +="',";
 	insertDraft +="1";
 	insertDraft +=",'";
@@ -140,19 +149,47 @@ void CSaveModelDlg::OnBnClickedSave()
 	m_ado.CloseRecordset();
 	m_ado.CloseConn();
 	
-	ProName dialg_label;
-	ProStringToWstring(dialg_label,"1");
-	ProLine filter_string;
-	ProStringToWstring(filter_string,"2");
-	ProPath path;
-	ProStringToWstring(path,"D:\\gnhdata");
-	ProName short_cut_name;
-	ProStringToWstring(short_cut_name,"3");
-	ProFileName fileName;
-	ProStringToWstring(short_cut_name,"3.prt");
-	ProPath file;
+	//char * temp;
+	
+	//ProName dialg_label;
+	//ProStringToWstring(dialg_label,"1");
+	//ProLine filter_string;
+	//ProStringToWstring(filter_string,"*.prt");
+	//ProPath path;
+	//ProStringToWstring(path,"D:\\gnhzbdata");
+	//ProName short_cut_name;
+	//ProStringToWstring(short_cut_name,"3");
 
-	ProFileSave(dialg_label,filter_string,&path,&short_cut_name,path,fileName,file);
+	//ProFileName fileName;
+	//temp = (LPSTR)(LPCTSTR)file_name;
+	//ProStringToWstring(fileName,temp);
+	//ProPath file;
+
+	ProError status;
+	status = ProMdlSave(cur_solid);
+	status = ProMdlErase(cur_solid);
+	//status = ProFileSave(NULL,filter_string,&path,&short_cut_name,path,fileName,file);
+	//status = ProFileSave(dialg_label,filter_string,NULL,NULL,NULL,fileName,file);
+	if(status == PRO_TK_NO_ERROR){
+		MessageBox("保存成功","提示");
+		CDialog::OnCancel();  
+		CString updateTask = _T("update VARIANT_TASK set STATUS = '待提交' where ID=");
+		updateTask += taskId;
+		ADO m_ado;
+		m_ado.OnInitADOConn();
+		m_ado.CmdExecute(updateTask);
+		m_ado.CloseRecordset();
+		m_ado.CloseConn();
+	}else{
+		MessageBox("保存失败","提示");
+	}
 }
 
 
+
+
+void CSaveModelDlg::OnBnClickedCancel()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CDialog::OnCancel();
+}
